@@ -1,0 +1,14 @@
+[run]
+omit =
+    */tests/*
+    */venv/*
+
+[report]
+exclude_lines =
+    pragma: no cover
+
+[xml]
+output = ./reports/cov_report.xml
+
+[html]
+directory = ./reports/cov_report.html
