@@ -1,16 +1,24 @@
 FROM python:3.8-slim AS builder
-RUN apt-get update && apt-get install -y --no-install-recommends build-essential gcc
+RUN apt-get update && apt-get install -y --no-install-recommends --yes python3-venv gcc libpython3-dev && \
+    python3 -m venv /venv && \
+    /venv/bin/pip install --upgrade pip
+
+FROM builder AS builder-venv
 
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN /venv/bin/pip install -r /requirements.txt
 
-COPY . .
-RUN python setup.py install
+FROM builder-venv AS tester
+
+COPY . /app
+WORKDIR /app
+RUN /venv/bin/pytest
 
 FROM python:3.8.1-alpine3.11 AS runner
-COPY --from=builder /usr/local/lib/python3.8/site-packages/ /usr/local/lib/python3.8/site-packages/
+COPY --from=tester /venv /venv
+COPY --from=tester /app /app
 
-CMD ["python", "-m", "blueprint"]
+WORKDIR /app
 
-
-# TODO add test run to this image build
+ENTRYPOINT ["/venv/bin/python3", "-m", "blueprint"]
+USER 1001

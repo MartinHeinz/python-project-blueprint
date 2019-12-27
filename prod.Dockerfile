@@ -1,17 +1,24 @@
 FROM python:3.5-slim AS builder
-RUN apt-get update && apt-get install -y --no-install-recommends build-essential gcc
+RUN apt-get update && apt-get install -y --no-install-recommends --yes python3-venv gcc libpython3-dev && \
+    python3 -m venv /venv && \
+    /venv/bin/pip install --upgrade pip
+
+FROM builder AS builder-venv
 
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN /venv/bin/pip install -r /requirements.txt
 
-COPY . .
-RUN python setup.py install
+FROM builder-venv AS tester
 
-FROM gcr.io/distroless/python3 as runner
-COPY --from=builder /usr/local/lib/python3.5/site-packages/ /usr/local/lib/python3.5/site-packages/
+COPY . /app
+WORKDIR /app
+RUN /venv/bin/pytest
 
-ENV PYTHONPATH=/usr/local/lib/python3.5/site-packages/blueprint-0.0.1-py3.5.egg
-ENTRYPOINT ["python", "-m", "blueprint"]
+FROM gcr.io/distroless/python3-debian10 AS runner
+COPY --from=tester /venv /venv
+COPY --from=tester /app /app
 
-# TODO parametrize the version (Python and package version)
-# TODO add test run to this image build
+WORKDIR /app
+
+ENTRYPOINT ["/venv/bin/python3", "-m", "blueprint"]
+USER 1001
