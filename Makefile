@@ -63,4 +63,4 @@ clean:
 	rm -rf .pytest_cache
 
 docker-clean:
-	@docker system prune --filter "label=name=$(IMAGE)"
+	@docker system prune -f --filter "label=name=$(MODULE)"
