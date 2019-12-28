@@ -14,7 +14,7 @@ COPY . /app
 WORKDIR /app
 RUN /venv/bin/pytest
 
-FROM python:3.8.1-alpine3.11 AS runner
+FROM python:3.8.1 AS runner
 COPY --from=tester /venv /venv
 COPY --from=tester /app /app
 
@@ -22,3 +22,6 @@ WORKDIR /app
 
 ENTRYPOINT ["/venv/bin/python3", "-m", "blueprint"]
 USER 1001
+
+LABEL name={NAME}
+LABEL version={VERSION}
