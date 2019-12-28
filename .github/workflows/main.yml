@@ -14,6 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - uses: actions/setup-python@v1
+      with:
+        python-version: '3.8'
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
@@ -27,6 +30,6 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Log into Registry
-      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+      run: echo "${{ secrets.REGISTRY_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
     - name: Push to GitHub Package Registry
       run: make push VERSION=0.0.3
