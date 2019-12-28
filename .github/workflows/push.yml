@@ -1,0 +1,18 @@
+name: Push
+
+on:
+  push:
+    tags:
+    - 'v*.*.*'
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set env
+      run: echo ::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF:10})
+    - name: Log into Registry
+      run: echo "${{ secrets.REGISTRY_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+    - name: Push to GitHub Package Registry
+      run: make push VERSION=${{ env.RELEASE_VERSION }}

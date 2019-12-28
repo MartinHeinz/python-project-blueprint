@@ -1,4 +1,4 @@
-name: CI
+name: Build and Test
 
 on: [push]
 
@@ -23,13 +23,4 @@ jobs:
         pip install -r requirements.txt
     - name: Run Makefile test
       run: make test
-  
-    
-  push:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: Log into Registry
-      run: echo "${{ secrets.REGISTRY_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-    - name: Push to GitHub Package Registry
-      run: make push VERSION=0.0.3
+
