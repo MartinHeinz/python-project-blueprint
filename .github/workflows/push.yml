@@ -3,7 +3,7 @@ name: Push
 on:
   push:
     tags:
-    - 'v*.*.*'
+    - '*'
 
 jobs:
   push:
