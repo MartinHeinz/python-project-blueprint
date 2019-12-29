@@ -57,7 +57,7 @@ push: build-prod
 version:
 	@echo $(TAG)
 
-.PHONY: clean image-clean build-prod push
+.PHONY: clean image-clean build-prod push test
 
 clean:
 	rm -rf .pytest_cache

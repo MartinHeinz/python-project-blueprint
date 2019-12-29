@@ -1,5 +1,12 @@
 # Blueprint/Boilerplate For Python Projects
 
+## Quick Start
+To use this repository as starter for your project you can run `configure_project.sh` script, which sets up all variables and file names. This way you can avoid configuring and renaming things yourself:
+
+```shell
+./configure_project.sh MODULE="coolproject" REGISTRY="docker.pkg.github.com/martinheinz/repo-name"
+```
+
 ## Running
 
 ### Using Python Interpreter
