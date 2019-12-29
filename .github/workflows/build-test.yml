@@ -23,4 +23,3 @@ jobs:
         pip install -r requirements.txt
     - name: Run Makefile test
       run: make test
-
