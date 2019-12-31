@@ -1,4 +1,4 @@
-name: Build and Test
+name: Build, Test, Lint
 
 on: [push]
 
@@ -23,3 +23,14 @@ jobs:
         pip install -r requirements.txt
     - name: Run Makefile test
       run: make test
+    - name: Install pylint
+      run: pip install pylint
+    - name: Run Pylint
+      run: make lint
+    - name: Send report to CodeClimate
+      run: |
+        export GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
+        curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+        chmod +x ./cc-test-reporter
+        ./cc-test-reporter format-coverage -t coverage.py coverage.xml
+        ./cc-test-reporter upload-coverage -r "${{ secrets.CC_TEST_REPORTER_ID }}"

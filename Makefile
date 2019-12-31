@@ -18,6 +18,10 @@ run:
 test:
 	@pytest
 
+lint:
+	@echo "\n${BLUE}Running Pylint against source and test files...${NC}\n"
+	@pylint --rcfile=.pylintrc **/*.py
+
 # Example: make build-prod VERSION=1.0.0
 build-prod:
 	@echo "\n${BLUE}Building Production image with labels:\n"
