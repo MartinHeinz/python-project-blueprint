@@ -1,14 +1,14 @@
 [run]
+branch = True
 omit =
+    */__main__.py
     */tests/*
     */venv/*
 
 [report]
 exclude_lines =
     pragma: no cover
-
-[xml]
-output = ./reports/cov_report.xml
+    if __name__ == .__main__.:
 
 [html]
-directory = ./reports/cov_report.html
+directory = reports
