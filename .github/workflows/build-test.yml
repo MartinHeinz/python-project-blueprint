@@ -23,9 +23,12 @@ jobs:
         pip install -r requirements.txt
     - name: Run Makefile test
       run: make test
-    - name: Install pylint
-      run: pip install pylint
-    - name: Run Pylint
+    - name: Install Linters
+      run: |
+        pip install pylint
+        pip install flake8
+        pip install bandit
+    - name: Run Linters
       run: make lint
     - name: Send report to CodeClimate
       run: |

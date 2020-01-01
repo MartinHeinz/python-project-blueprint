@@ -1,0 +1,12 @@
+[flake8]
+exclude =
+    .git,
+    __pycache__,
+    .pytest_cache,
+    venv
+
+ignore =
+    # Put Error/Style codes here e.g. H301
+
+max-complexity = 10
+max-line-length = 120
