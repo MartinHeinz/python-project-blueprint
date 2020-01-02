@@ -20,11 +20,11 @@ test:
 
 lint:
 	@echo "\n${BLUE}Running Pylint against source and test files...${NC}\n"
-	@pylint --rcfile=.pylintrc **/*.py
+	@pylint --rcfile=setup.cfg **/*.py
 	@echo "\n${BLUE}Running Flake8 against source and test files...${NC}\n"
 	@flake8
 	@echo "\n${BLUE}Running Bandit against source files...${NC}\n"
-	@bandit -r --ini .bandit
+	@bandit -r --ini setup.cfg
 
 # Example: make build-prod VERSION=1.0.0
 build-prod:
