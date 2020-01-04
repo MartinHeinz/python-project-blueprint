@@ -1,5 +1,5 @@
 # The binary to build (just the basename).
-MODULE := example
+MODULE := blueprint
 
 # Where to push the docker image.
 REGISTRY ?= docker.pkg.github.com/martinheinz/python-project-blueprint
@@ -68,7 +68,7 @@ version:
 .PHONY: clean image-clean build-prod push test
 
 clean:
-	rm -rf .pytest_cache
+	rm -rf .pytest_cache .coverage .pytest_cache coverage.xml
 
 docker-clean:
 	@docker system prune -f --filter "label=name=$(MODULE)"

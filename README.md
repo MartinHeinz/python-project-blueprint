@@ -60,7 +60,7 @@ Login Succeeded
 
 ## Cleaning
 
-Clean _Pytest_ cache:
+Clean _Pytest_ and coverage cache/files:
 
 ```console
 ~ $ make clean
