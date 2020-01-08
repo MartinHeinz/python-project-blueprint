@@ -27,6 +27,7 @@ mv $DUMMY_MODULE $MODULE
 
 sed -i s/$DUMMY_MODULE/$MODULE/g pytest.ini
 sed -i s/$DUMMY_MODULE/$MODULE/g setup.cfg
+sed -i s/$DUMMY_MODULE/$MODULE/g sonar-project.properties
 sed -i s~$DUMMY_REGISTRY~$REGISTRY~g Makefile
 sed -i s/example/$MODULE/g Makefile
 sed -i s/$DUMMY_MODULE/$MODULE/g Makefile

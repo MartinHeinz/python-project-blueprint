@@ -30,6 +30,7 @@ jobs:
         pip install bandit
     - name: Run Linters
       run: make lint
+
     - name: Send report to CodeClimate
       run: |
         export GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
@@ -37,3 +38,9 @@ jobs:
         chmod +x ./cc-test-reporter
         ./cc-test-reporter format-coverage -t coverage.py coverage.xml
         ./cc-test-reporter upload-coverage -r "${{ secrets.CC_TEST_REPORTER_ID }}"
+
+    - name: SonarCloud scanner
+      uses: sonarsource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
