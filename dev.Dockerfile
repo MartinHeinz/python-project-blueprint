@@ -1,4 +1,4 @@
-FROM python:3.8-slim AS builder
+FROM python:3.8.1-buster AS builder
 RUN apt-get update && apt-get install -y --no-install-recommends --yes python3-venv gcc libpython3-dev && \
     python3 -m venv /venv && \
     /venv/bin/pip install --upgrade pip
@@ -14,7 +14,7 @@ COPY . /app
 WORKDIR /app
 RUN /venv/bin/pytest
 
-FROM python:3.8.1 AS runner
+FROM martinheinz/python-3.8.1-buster-tools:latest AS runner
 COPY --from=tester /venv /venv
 COPY --from=tester /app /app
 
