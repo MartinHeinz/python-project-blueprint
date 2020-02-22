@@ -80,6 +80,26 @@ Clean _Docker_ images:
 ~ $ make docker-clean
 ```
 
+## Setting Up Sonar Cloud
+- Navigate to <https://sonarcloud.io/projects>
+- Click _plus_ in top right corner -> analyze new project
+- Setup with _other CI tool_ -> _other_ -> _Linux_
+- Copy `-Dsonar.projectKey=` and `-Dsonar.organization=`
+    - These 2 values go to `sonar-project.properties` file
+- Click pencil at bottom of `sonar-scanner` command
+- Generate token and save it
+- Go to repo -> _Settings_ tab -> _Secrets_ -> _Add a new secret_
+    - name: `SONAR_TOKEN`
+    - value: _Previously copied token_
+    
+## Creating Secret Tokens
+Token is needed for example for _GitHub Package Registry_. To create one:
+
+- Go to _Settings_ tab
+- Click _Secrets_
+- Click _Add a new secret_
+    - _Name_: _name that will be accessible in GitHub Actions as `secrets.NAME`_
+    - _Value_: _value_
 
 ### Resources
 - <https://realpython.com/python-application-layouts/>
