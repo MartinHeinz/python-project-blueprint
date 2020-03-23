@@ -64,21 +64,19 @@ metadata:
   name: blueprint-ingress
   namespace: blueprint
   annotations:
-#    nginx.ingress.kubernetes.io/auth-tls-secret: tls-secret  # https://kubernetes.github.io/ingress-nginx/user-guide/tls/
-#    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-#    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    # nginx.org/redirect-to-https: "True"
-    # nginx.org/hsts: "True"
+    nginx.ingress.kubernetes.io/auth-tls-secret: tls-secret  # https://kubernetes.github.io/ingress-nginx/user-guide/tls/
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
   labels:
     app: blueprint
 spec:
-#  tls:
-#    - hosts:
-#        - example.com
-#      secretName: tls-secret
+  tls:
+    - hosts:
+      - localhost
+      secretName: tls-secret
   rules:
-#    - host: example.com
-    - http:
+    - host: localhost
+      http:
         paths:
           - path: "/"
             backend:
@@ -93,7 +91,7 @@ spec:
 #
 # KEY_FILE="blueprint.key"
 # CERT_FILE="blueprint.crt"
-# HOST="example.com"
+# HOST="localhost"
 # CERT_NAME=tls-secret
 # openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${KEY_FILE} -out ${CERT_FILE} -subj "/CN=${HOST}/O=${HOST}"
 #
