@@ -1,0 +1,102 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: blueprint
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: blueprint
+  name: blueprint
+  namespace: blueprint
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: blueprint
+    spec:
+      containers:
+        - image: hashicorp/http-echo
+          args:
+            - "-text=foo"
+          name: blueprint
+          ports:
+            - containerPort: 5678
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: env-config-blueprint
+            - secretRef:
+                name: env-secrets-blueprint
+  selector:
+    matchLabels:
+      app: blueprint
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-config-blueprint
+  namespace: blueprint
+data:
+  VAR: Value
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blueprint
+  namespace: blueprint
+  labels:
+    app: blueprint
+spec:
+  selector:
+    app: blueprint
+  ports:
+    - name: http
+      targetPort: 5678  # port the container accepts traffic on
+      port: 443  # port other pods use to access the Service
+      protocol: TCP
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: blueprint-ingress
+  namespace: blueprint
+  annotations:
+#    nginx.ingress.kubernetes.io/auth-tls-secret: tls-secret  # https://kubernetes.github.io/ingress-nginx/user-guide/tls/
+#    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+#    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    # nginx.org/redirect-to-https: "True"
+    # nginx.org/hsts: "True"
+  labels:
+    app: blueprint
+spec:
+#  tls:
+#    - hosts:
+#        - example.com
+#      secretName: tls-secret
+  rules:
+#    - host: example.com
+    - http:
+        paths:
+          - path: "/"
+            backend:
+              serviceName: blueprint
+              servicePort: 443
+---
+# To create secret map for application:
+#
+# kubectl create secret generic env-secrets-blueprint --from-literal=VAR=VALUE --dry-run -o yaml >> app.yaml && echo "---" >> app.yaml
+#
+# To create TLS secret
+#
+# KEY_FILE="blueprint.key"
+# CERT_FILE="blueprint.crt"
+# HOST="example.com"
+# CERT_NAME=tls-secret
+# openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${KEY_FILE} -out ${CERT_FILE} -subj "/CN=${HOST}/O=${HOST}"
+#
+# kubectl create secret tls ${CERT_NAME} --key ${KEY_FILE} --cert ${CERT_FILE} --dry-run -o yaml >> app.yaml
+#
+
