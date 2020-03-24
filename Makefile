@@ -62,6 +62,28 @@ push: build-prod
 	@echo "\n${BLUE}Pushing image to GitHub Docker Registry...${NC}\n"
 	@docker push $(IMAGE):$(VERSION)
 
+cluster:
+	if [ $(kind get clusters | wc -l) = 0 ] && kind create cluster --config kind-config.yaml --name kind
+	@kubectl cluster-info --context kind-kind
+	@kubectl get nodes
+	@kubectl config set-context kind-kind --namespace $(MODULE)
+
+deploy-local:
+	@kubectl rollout restart deployment $(MODULE)
+
+cluster-debug:
+	@echo "\n${BLUE}Current Pods${NC}\n"
+	@kubectl describe pods
+	@echo "\n${BLUE}Recent Logs${NC}\n"
+	@kubectl logs --since=1h -lapp=$(MODULE)
+
+cluster-rsh:
+	@POD=$(kubectl get pod -l app=$(MODULE) -o jsonpath="{.items[0].metadata.name}")
+	@kubectl exec -it $POD -- /bin/bash  # if your container has bash available
+
+manifest-update:
+	kubectl apply -f ./k8s/app.yaml
+
 version:
 	@echo $(TAG)
 
