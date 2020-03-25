@@ -18,18 +18,20 @@ spec:
         app: blueprint
     spec:
       containers:
-        - image: hashicorp/http-echo
-          args:
-            - "-text=foo"
+#        - image: docker.pkg.github.com/martinheinz/python-project-blueprint/example:flask  # https://github.com/containerd/containerd/issues/3291
+        - image: martinheinz/python-project-blueprint:flask
           name: blueprint
+          imagePullPolicy: Always
           ports:
-            - containerPort: 5678
+            - containerPort: 5000
               protocol: TCP
           envFrom:
             - configMapRef:
                 name: env-config-blueprint
             - secretRef:
                 name: env-secrets-blueprint
+#      imagePullSecrets:  # In case you are using private registry (see kubectl command at the bottom on how to create regcred)
+#        - name: regcred
   selector:
     matchLabels:
       app: blueprint
@@ -39,8 +41,9 @@ kind: ConfigMap
 metadata:
   name: env-config-blueprint
   namespace: blueprint
-data:
-  VAR: Value
+data:  # Example vars that will get picked up by Flask application
+  FLASK_ENV: development
+  FLASK_DEBUG: "1"
 ---
 apiVersion: v1
 kind: Service
@@ -54,7 +57,7 @@ spec:
     app: blueprint
   ports:
     - name: http
-      targetPort: 5678  # port the container accepts traffic on
+      targetPort: 5000  # port the container accepts traffic on
       port: 443  # port other pods use to access the Service
       protocol: TCP
 ---
@@ -64,7 +67,7 @@ metadata:
   name: blueprint-ingress
   namespace: blueprint
   annotations:
-    nginx.ingress.kubernetes.io/auth-tls-secret: tls-secret  # https://kubernetes.github.io/ingress-nginx/user-guide/tls/
+#    nginx.ingress.kubernetes.io/auth-tls-secret: tls-secret  # https://kubernetes.github.io/ingress-nginx/user-guide/tls/
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
   labels:
@@ -95,6 +98,7 @@ spec:
 # CERT_NAME=tls-secret
 # openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${KEY_FILE} -out ${CERT_FILE} -subj "/CN=${HOST}/O=${HOST}"
 #
-# kubectl create secret tls ${CERT_NAME} --key ${KEY_FILE} --cert ${CERT_FILE} --dry-run -o yaml >> app.yaml
+# kubectl create secret tls ${CERT_NAME} --key ${KEY_FILE} --cert ${CERT_FILE} --dry-run -o yaml >> app.yaml && echo "---" >> app.yaml
 #
+# kubectl create secret docker-registry regcred --namespace=kube-system --docker-server=docker.pkg.github.com --docker-username=<USERNAME> --docker-password=<GITHUB_REG_TOKEN> --dry-run -o yaml >> app.yaml
 
