@@ -18,8 +18,8 @@ spec:
         app: blueprint
     spec:
       containers:
-#        - image: docker.pkg.github.com/martinheinz/python-project-blueprint/example:flask  # https://github.com/containerd/containerd/issues/3291
-        - image: martinheinz/python-project-blueprint:flask
+#        - image: docker.pkg.github.com/martinheinz/python-project-blueprint/example:flask
+#          ^^^^^  https://github.com/containerd/containerd/issues/3291 https://github.com/kubernetes-sigs/kind/issues/870        - image: martinheinz/python-project-blueprint:flask
           name: blueprint
           imagePullPolicy: Always
           ports:
