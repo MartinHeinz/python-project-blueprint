@@ -81,6 +81,40 @@ Clean _Docker_ images:
 ~ $ make docker-clean
 ```
 
+## Kubernetes
+
+Application can be easily deployed on _k8s_ using _KinD_.
+
+To create cluster and/or view status:
+
+```console
+~ $ make cluster
+```
+
+To deploy application to local cluster:
+
+```console
+~ $ make deploy-local
+```
+
+To get debugging information of running application:
+
+```console
+~ $ make cluster-debug
+```
+
+To get remote shell into application pod:
+
+```console
+~ $ make cluster-rsh
+```
+
+To apply/update _Kubernetes_ manifest stored in `k8s` directory:
+
+```console
+~ $ make manifest-update
+```
+
 ## Setting Up Sonar Cloud
 - Navigate to <https://sonarcloud.io/projects>
 - Click _plus_ in top right corner -> analyze new project
