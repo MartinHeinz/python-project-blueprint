@@ -1,4 +1,4 @@
-from .app import Blueprint
+from .app import Server
 
 if __name__ == '__main__':
-    Blueprint.run()
+    Server.run()

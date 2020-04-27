@@ -1,11 +1,22 @@
-import logging
 import pytest
 
-LOGGER = logging.getLogger(__name__)
+
+@pytest.fixture(scope='module')
+def grpc_add_to_server():
+    from blueprint.generated.echo_pb2_grpc import add_EchoServicer_to_server
+
+    return add_EchoServicer_to_server
 
 
-@pytest.fixture(scope='function')
-def example_fixture():
-    LOGGER.info("Setting Up Example Fixture...")
-    yield
-    LOGGER.info("Tearing Down Example Fixture...")
+@pytest.fixture(scope='module')
+def grpc_servicer():
+    from blueprint.grpc import Echoer
+
+    return Echoer()
+
+
+@pytest.fixture(scope='module')
+def grpc_stub(grpc_channel):
+    from blueprint.generated.echo_pb2_grpc import EchoStub
+
+    return EchoStub(grpc_channel)

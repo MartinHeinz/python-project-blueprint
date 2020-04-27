@@ -62,6 +62,14 @@ push: build-prod
 	@echo "\n${BLUE}Pushing image to GitHub Docker Registry...${NC}\n"
 	@docker push $(IMAGE):$(VERSION)
 
+grpc-gen:
+	@python -m grpc_tools.protoc \
+			-I $(MODULE)/proto \
+			--python_out=./$(MODULE)/generated \
+			--grpc_python_out=./$(MODULE)/generated \
+			./$(MODULE)/proto/*.proto
+	@sed -i -E 's/^import.*_pb2/from . \0/' ./$(MODULE)/generated/*.py
+
 cluster:
 	@if [ $$(kind get clusters | wc -l) = 0 ]; then \
 		kind create cluster --config ./k8s/cluster/kind-config.yaml --name kind; \
