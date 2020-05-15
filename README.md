@@ -13,6 +13,7 @@ You can find more information about this project/repository and how to use it in
 - [Ultimate Setup for Your Next Python Project](https://towardsdatascience.com/ultimate-setup-for-your-next-python-project-179bda8a7c2c)
 - [Automating Every Aspect of Your Python Project](https://towardsdatascience.com/automating-every-aspect-of-your-python-project-6517336af9da)
 - [Deploy Any Python Project to Kubernetes](https://towardsdatascience.com/deploy-any-python-project-to-kubernetes-2c6ad4d41f14)
+- [Implementing gRPC server using Python](https://towardsdatascience.com/implementing-grpc-server-using-python-9dc42e8daea0)
 
 ## Quick Start
 To use this repository as starter for your project you can run `configure_project.sh` script, which sets up all variables and file names. This way you can avoid configuring and renaming things yourself:
