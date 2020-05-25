@@ -5,6 +5,7 @@ RUN apt-get update && \
     /venv/bin/pip install --upgrade pip
 
 FROM builder AS builder-venv
+
 COPY requirements.txt /requirements.txt
 RUN /venv/bin/pip install --disable-pip-version-check -r /requirements.txt
 
