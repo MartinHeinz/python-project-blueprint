@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package echo;
+
+// The echo service definition.
+service Echo {
+  // Echo back reply.
+  rpc Reply (EchoRequest) returns (EchoReply) {}
+}
+
+// The request message containing the user's message.
+message EchoRequest {
+  string message = 1;
+}
+
+// The response message containing the original message.
+message EchoReply {
+  string message = 1;
+}

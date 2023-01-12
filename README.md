@@ -57,6 +57,14 @@ docker.pkg.github.com/martinheinz/python-project-blueprint/blueprint   0.0.5    
 Hello World...
 ```
 
+## gRPC
+
+To generate gRPC sources from `.proto` files stored in `./blueprint/generated/` directory:
+
+```console
+~ $ make grpc-gen
+```
+
 ## Testing
 
 Test are ran every time you build _dev_ or _prod_ image. You can also run tests using:
